@@ -1,9 +1,35 @@
-/*
- * Create a list that holds all of your cards
- */
-const cardList = ["fa-diamond", "fa-paper-plane-o", "fa-anchor", 
-"fa-bolt", "fa-cube", "fa-leaf", "fa-bicycle", "fa-bomb"];
+const cards = [];
+const cardList = ["fa fa-diamond", "fa fa-paper-plane-o", "fa fa-anchor", 
+"fa fa-bolt", "fa fa-cube", "fa fa-leaf", "fa fa-bicycle", "fa fa-bomb", "fa fa-diamond", 
+"fa fa-paper-plane-o", "fa fa-anchor", "fa fa-bolt", "fa fa-cube", "fa fa-leaf", 
+"fa fa-bicycle", "fa fa-bomb"];
 
+for (let i = 0; i <= cardList.length-1; i++) {
+    $('.deck').append('<li><i>');
+}
+
+function emptyArray() {
+            cards.length=0;
+        };
+
+$(function() {
+        let cardNumber = 0;
+    $('.deck').each(function() {
+        $(this).find('li').find('i').each(function() {
+            $(this).removeAttr('class')
+            $(this).addClass(cardList[cardNumber]).addClass('card');
+            cardNumber++;
+        });
+    });
+});
+
+$(function clicking (){
+    $('.deck').find('.card').bind('click', function() {
+        let card = $(this).attr('class');
+        $(this).addClass('open show');
+        cards.push(card);
+    });
+})
 
 /*
  * Display the cards on the page
@@ -13,19 +39,21 @@ const cardList = ["fa-diamond", "fa-paper-plane-o", "fa-anchor",
  */
 
 // Shuffle function from http://stackoverflow.com/a/2450976
-function shuffle(cardList) {
-    var currentIndex = cardList.length, temporaryValue, randomIndex;
+function shuffle(array) {
+    var currentIndex = array.length, temporaryValue, randomIndex;
 
     while (currentIndex !== 0) {
         randomIndex = Math.floor(Math.random() * currentIndex);
         currentIndex -= 1;
-        temporaryValue = cardList[currentIndex];
-        cardList[currentIndex] = cardList[randomIndex];
-        cardList[randomIndex] = temporaryValue;
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
     }
-    return cardList;
+    return array;
 }
 
+shuffle(cardList);
+createCards();
 
 /*
  * set up the event listener for a card. If a card is clicked:
