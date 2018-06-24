@@ -42,9 +42,17 @@ $(function(){
                     $('.deck').find('.notmatch').removeClass('open show notmatch');
                 }, 600);
                 emptyArray();
-        }};
-    });
+            } if (match === 8) {
+                $('.deck').find('.match').removeClass('open show match card').addClass('winner').off();
+
+            };
+    }});
 });
+
+$(function(){
+    if (match==8) {
+        $('.deck').find('.match').removeClass('open show match').addClass('winner');
+    }});
 
 function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;

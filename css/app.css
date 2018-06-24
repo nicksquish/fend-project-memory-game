@@ -73,6 +73,9 @@ h1 {
     pointer-events: none;
 }
 
+.winner{
+    background-color: green;
+}
 
 .deck .card.open {
     transform: rotateY(0);
