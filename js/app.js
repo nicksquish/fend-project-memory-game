@@ -12,18 +12,38 @@ function emptyArray() {
             cards.length=0;
         };
 
-$(function() {
+const startGame = function() {
         let cardNumber = 0;
-    $('.deck').each(function() {
+        $('.deck').each(function() {
         $(this).find('li').find('i').each(function() {
             $(this).removeAttr('class')
             $(this).addClass(cardList[cardNumber]).addClass('card');
             cardNumber++;
+            moves=12;
+            $('.moves').text(moves+0);
+
         });
     });
-});
+};
 
-$(function(){
+const starRating = function (){
+    if (moves <= 8) {
+        $('.three').removeClass('fa-star').addClass('fa-star-o');
+    }
+    if (moves <= 4) {
+        $('.two').removeClass('fa-star').addClass('fa-star-o');
+    }
+    if (moves === 0) {
+        $('.one').removeClass('fa-star').addClass('fa-star-o');
+        $('section').text('GAME OVER!').css({
+            textAlign: 'center',
+            fontSize: '20px',
+            fontWeight: 'bold'
+        });
+    }
+}
+
+const addCardListener = function(){
     $('.deck').find('.card').bind('click', function() {
         let card = $(this).attr('class');
         $(this).addClass('open show');
@@ -40,19 +60,25 @@ $(function(){
                 $('.deck').find('.open').addClass('notmatch');
                 setTimeout(function (){
                     $('.deck').find('.notmatch').removeClass('open show notmatch');
-                }, 600);
+                }, 600)
+                moves--;
+                $('.moves').text(moves);
                 emptyArray();
             } if (match === 8) {
                 $('.deck').find('.match').removeClass('open show match card').addClass('winner').off();
-
             };
+            starRating();
     }});
-});
+};
 
-$(function(){
+const endGame = function(){
     if (match==8) {
         $('.deck').find('.match').removeClass('open show match').addClass('winner');
-    }});
+    }};
+
+$('.restart').bind('click', function() {
+    startGame();
+});
 
 function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
@@ -68,26 +94,11 @@ function shuffle(array) {
 }
 
 shuffle(cardList);
-createCards();
-clicking();
+startGame();
+addCardListener();
+starRating();
 
 /*
- * set up the event listener for a card. If a card is clicked:
-
- *  - display the card's symbol (put this functionality in another 
-        function that you call from this one)
- *  
-    - add the card to a *list* of "open" cards (put this
-         functionality in another function that you call from this one)
- *  -   if the list already has another card, check to see if the two cards match
-
- *    + if the cards do match, lock the cards in the open position (put this
-         functionality in another function that you call from this one)
-
- *    + if the cards do not match, remove the cards from the list and hide the 
-        card's symbol (put this functionality in another function that you call 
-        from this one)
-
  *    + increment the move counter and display it on the page (put this 
         functionality in another function that you call from this one)
 
