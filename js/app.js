@@ -3,7 +3,7 @@ const cardList = ["fa fa-diamond", "fa fa-paper-plane-o", "fa fa-anchor",
 "fa fa-bolt", "fa fa-cube", "fa fa-leaf", "fa fa-bicycle", "fa fa-bomb", "fa fa-diamond", 
 "fa fa-paper-plane-o", "fa fa-anchor", "fa fa-bolt", "fa fa-cube", "fa fa-leaf", 
 "fa fa-bicycle", "fa fa-bomb"];
-
+match=0;
 for (let i = 0; i <= cardList.length-1; i++) {
     $('.deck').append('<li><i>');
 }
@@ -23,22 +23,29 @@ $(function() {
     });
 });
 
-$(function clicking (){
+$(function(){
     $('.deck').find('.card').bind('click', function() {
         let card = $(this).attr('class');
         $(this).addClass('open show');
         cards.push(card);
+        if (cards.length > 1) {
+            if (card === cards[0]) {
+                $('.deck').find('.open').addClass('match');
+                setTimeout(function (){
+                    $('.deck').find('.match').removeClass('open show');
+                }, 600);
+                match++;
+                emptyArray();
+            } else {
+                $('.deck').find('.open').addClass('notmatch');
+                setTimeout(function (){
+                    $('.deck').find('.notmatch').removeClass('open show notmatch');
+                }, 600);
+                emptyArray();
+        }};
     });
-})
+});
 
-/*
- * Display the cards on the page
- *   - shuffle the list of cards using the provided "shuffle" method below
- *   - loop through each card and create its HTML
- *   - add each card's HTML to the page
- */
-
-// Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
 
@@ -54,6 +61,7 @@ function shuffle(array) {
 
 shuffle(cardList);
 createCards();
+clicking();
 
 /*
  * set up the event listener for a card. If a card is clicked:
