@@ -73,12 +73,16 @@ h1 {
     pointer-events: none;
 }
 
+.deck .card.notmatch {
+  background: #f95c3c;
+}
+
 .winner{
     background-color: green;
 }
 
 .deck .card.open {
-    transform: rotateY(0);
+    transform: rotateY(180);
     background: #02b3e4;
     cursor: default;
 }
