@@ -4,11 +4,13 @@ const cardList = ["fa fa-diamond", "fa fa-paper-plane-o", "fa fa-anchor",
 "fa fa-paper-plane-o", "fa fa-anchor", "fa fa-bolt", "fa fa-cube", "fa fa-leaf", 
 "fa fa-bicycle", "fa fa-bomb"];
 match=0;
+currentTimer=0;
+second=0;
 
 //initialize game board
 for (let i = 0; i <= cardList.length-1; i++) {
     $('.deck').append('<li><i>');
-}
+};
 
 function emptyArray() {
             cards.length=0;
@@ -24,9 +26,21 @@ const startGame = function() {
             cardNumber++;
             moves=12;
             $('.moves').text(moves+0);
-
         });
     });
+};
+
+function startTimer() {
+    liveTimer = setInterval(function() {
+        second++;
+        $('.timer').text(second);
+    }, 1000);
+};
+
+function endTimer() {
+        clearInterval(liveTimer);
+        second=0;
+        $('.timer').text(second);
 };
 
 //check number of moves remaining and gives star rating
@@ -75,21 +89,21 @@ const addCardListener = function(){
                 $('.moves').text(moves);
                 emptyArray();
             } if (match === 8) {
-                $('.deck').find('.match').removeClass('open show match card').addClass('winner').off();
+                $('.deck').find('.match').addClass('animated bounce infinite').off();
             };
             starRating();
-    }});
+            startTimer();
+        }});
 };
-
-//check number of matches to determine victory condition
-const endGame = function(){
-    if (match==8) {
-        $('.deck').find('.match').removeClass('open show match').addClass('winner');
-    }};
 
 //reinitialize game board with restart button
 $('.restart').bind('click', function() {
+    $('body').addClass('animated fadeInDown');
+    endTimer();
     startGame();
+    setTimeout(function (){
+    $('body').removeClass('animated fadeInDown');
+    }, 1000)
 });
 
 //shuffle function
