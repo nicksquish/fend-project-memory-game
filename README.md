@@ -1,20 +1,10 @@
 # Memory Game Project
 
-## Table of Contents
+This is a simple memory matching game built from some simple HTML, CSS, and JavaScript. It is my submission for project two of the Udacity front-end Nanodegree!
+Much thanks to Udacity for providing the core HTML and CSS for the project.
 
-* [Instructions](#instructions)
-* [Contributing](#contributing)
+# How to play
 
-## Instructions
-
-The starter project has some HTML and CSS styling to display a static version of the Memory Game project. You'll need to convert this project from a static project to an interactive one. This will require modifying the HTML and CSS files, but primarily the JavaScript file.
-
-To get started, open `js/app.js` and start building out the app's functionality
-
-For specific, detailed instructions, look at the project instructions in the [Udacity Classroom](https://classroom.udacity.com/me).
-
-## Contributing
-
-This repository is the starter code for _all_ Udacity students. Therefore, we most likely will not accept pull requests.
-
-For details, check out [CONTRIBUTING.md](CONTRIBUTING.md).
+Click two cards
+If it matches, nice guess. If not, remember where that card was placed
+match all eight pairs before you run out of moves!
