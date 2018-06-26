@@ -1,4 +1,5 @@
 const cards = [];
+let firstClick = ['1'];
 const cardList = ["fa fa-diamond", "fa fa-paper-plane-o", "fa fa-anchor", 
 "fa fa-bolt", "fa fa-cube", "fa fa-leaf", "fa fa-bicycle", "fa fa-bomb", "fa fa-diamond", 
 "fa fa-paper-plane-o", "fa fa-anchor", "fa fa-bolt", "fa fa-cube", "fa fa-leaf", 
@@ -6,6 +7,8 @@ const cardList = ["fa fa-diamond", "fa fa-paper-plane-o", "fa fa-anchor",
 match=0;
 currentTimer=0;
 second=0;
+liveTimer=0;
+moves=12;
 
 //initialize game board
 for (let i = 0; i <= cardList.length-1; i++) {
@@ -24,11 +27,22 @@ const startGame = function() {
             $(this).removeAttr('class')
             $(this).addClass(cardList[cardNumber]).addClass('card');
             cardNumber++;
-            moves=12;
             $('.moves').text(moves+0);
         });
     });
 };
+
+function endGame() {
+    var userPreference;
+    setTimeout(function(){
+        if (confirm('Congratulations! You won in ' + second + 's and ' + moves + ' moves left! Play again?') == true){
+            userPreference = restart();
+        } else {
+            userPreference = endTimer();
+            $('.card').off();
+        };
+                }, 800);
+}
 
 function startTimer() {
     liveTimer = setInterval(function() {
@@ -72,6 +86,11 @@ const addCardListener = function(){
         let card = $(this).attr('class');
         $(this).addClass('open show');
         cards.push(card);
+        if (firstClick.length === 1) {
+                second = 0;
+                startTimer();
+                firstClick.pop('1');
+            };
         if (cards.length > 1) {
             if (card === cards[0]) {
                 $('.deck').find('.open').addClass('animated bounce match');
@@ -90,9 +109,9 @@ const addCardListener = function(){
                 emptyArray();
             } if (match === 8) {
                 $('.deck').find('.match').addClass('animated bounce infinite').off();
+                endGame();
             };
             starRating();
-            startTimer();
         }});
 };
 
@@ -100,11 +119,31 @@ const addCardListener = function(){
 $('.restart').bind('click', function() {
     $('body').addClass('animated fadeInDown');
     endTimer();
+    $('.one').removeClass('fa-star-o').addClass('fa-star');
+    $('.two').removeClass('fa-star-o').addClass('fa-star');
+    $('.three').removeClass('fa-star-o').addClass('fa-star');
     startGame();
+    firstClick = ['1'];
+    moves = 12;
+    $('.moves').text(moves);
     setTimeout(function (){
     $('body').removeClass('animated fadeInDown');
     }, 1000)
 });
+
+function restart () {$('body').addClass('animated fadeInDown');
+    endTimer();
+    $('.one').removeClass('fa-star-o').addClass('fa-star');
+    $('.two').removeClass('fa-star-o').addClass('fa-star');
+    $('.three').removeClass('fa-star-o').addClass('fa-star');
+    startGame();
+    firstClick = ['1'];
+    moves = 12;
+    $('.moves').text(moves);
+    setTimeout(function (){
+    $('body').removeClass('animated fadeInDown');
+    }, 1000)
+};
 
 //shuffle function
 function shuffle(array) {
@@ -124,3 +163,4 @@ shuffle(cardList);
 startGame();
 addCardListener();
 starRating();
+restart();
