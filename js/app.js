@@ -74,7 +74,7 @@ const starRating = function (){
 const addCardListener = function(){
     $('.deck').find('.card').bind('click', function() {
         let card = $(this).attr('class');
-        $(this).addClass('open show');
+        $(this).addClass('open show clicked');
         cards.push(card);
         if (!firstClick) {
             second = 0;
@@ -85,14 +85,14 @@ const addCardListener = function(){
             if (card === cards[0]) {
                 $('.deck').find('.open').addClass('animated bounce match');
                 setTimeout(function (){
-                    $('.deck').find('.match').removeClass('animated bounce open show');
+                    $('.deck').find('.match').removeClass('animated bounce open show clicked');
                 }, 1000);
                 match++;
                 emptyArray();
             } else {
-                $('.deck').find('.show').removeClass('open').addClass('animated tada notmatch');
+                $('.deck').find('.show').removeClass('open clicked').addClass('animated tada notmatch');
                 setTimeout(function (){
-                    $('.deck').find('.notmatch').removeClass('animated tada open show notmatch');
+                    $('.deck').find('.notmatch').removeClass('clicked animated tada open show notmatch');
                 }, 1000)
                 moves--;
                 $('.moves').text(moves);
