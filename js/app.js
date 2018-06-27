@@ -1,14 +1,13 @@
 const cards = [];
-let firstClick = ['1'];
-const cardList = ["fa fa-diamond", "fa fa-paper-plane-o", "fa fa-anchor", 
-"fa fa-bolt", "fa fa-cube", "fa fa-leaf", "fa fa-bicycle", "fa fa-bomb", "fa fa-diamond", 
-"fa fa-paper-plane-o", "fa fa-anchor", "fa fa-bolt", "fa fa-cube", "fa fa-leaf", 
-"fa fa-bicycle", "fa fa-bomb"];
+let firstClick = false;
+const cardIcons = ["fa fa-diamond", "fa fa-paper-plane-o", "fa fa-anchor", "fa fa-bolt", "fa fa-cube", "fa fa-leaf", "fa fa-bicycle", "fa fa-bomb"];
+const cardList = cardIcons.concat(cardIcons);
+const stars = ['1','2','3'];
 match=0;
 currentTimer=0;
 second=0;
-liveTimer=0;
-moves=12;
+timing=0;
+moves=0;
 
 //initialize game board
 for (let i = 0; i <= cardList.length-1; i++) {
@@ -22,6 +21,7 @@ function emptyArray() {
 //add card class to game board elements
 const startGame = function() {
         let cardNumber = 0;
+        moves = 12;
         $('.deck').each(function() {
         $(this).find('li').find('i').each(function() {
             $(this).removeAttr('class')
@@ -32,27 +32,15 @@ const startGame = function() {
     });
 };
 
-function endGame() {
-    var userPreference;
-    setTimeout(function(){
-        if (confirm('Congratulations! You won in ' + second + 's and ' + moves + ' moves left! Play again?') == true){
-            userPreference = restart();
-        } else {
-            userPreference = endTimer();
-            $('.card').off();
-        };
-                }, 800);
-}
-
 function startTimer() {
-    liveTimer = setInterval(function() {
+    timing = setInterval(function() {
         second++;
         $('.timer').text(second);
     }, 1000);
 };
 
 function endTimer() {
-        clearInterval(liveTimer);
+        clearInterval(timing);
         second=0;
         $('.timer').text(second);
 };
@@ -61,9 +49,11 @@ function endTimer() {
 const starRating = function (){
     if (moves <= 8) {
         $('.three').removeClass('fa-star').addClass('fa-star-o');
+        stars.pop();
     };
     if (moves <= 4) {
         $('.two').removeClass('fa-star').addClass('fa-star-o');
+        stars.pop();
     };
     if (moves === 0) {
         $('.one').removeClass('fa-star').addClass('fa-star-o');
@@ -86,11 +76,11 @@ const addCardListener = function(){
         let card = $(this).attr('class');
         $(this).addClass('open show');
         cards.push(card);
-        if (firstClick.length === 1) {
-                second = 0;
-                startTimer();
-                firstClick.pop('1');
-            };
+        if (!firstClick) {
+            second = 0;
+            startTimer();
+            firstClick = true;
+    };
         if (cards.length > 1) {
             if (card === cards[0]) {
                 $('.deck').find('.open').addClass('animated bounce match');
@@ -108,8 +98,8 @@ const addCardListener = function(){
                 $('.moves').text(moves);
                 emptyArray();
             } if (match === 8) {
-                $('.deck').find('.match').addClass('animated bounce infinite').off();
                 endGame();
+                $('.deck').find('.match').addClass('animated bounce infinite').off();
             };
             starRating();
         }});
@@ -137,13 +127,44 @@ function restart () {$('body').addClass('animated fadeInDown');
     $('.two').removeClass('fa-star-o').addClass('fa-star');
     $('.three').removeClass('fa-star-o').addClass('fa-star');
     startGame();
-    firstClick = ['1'];
+    shuffle(cardList);
     moves = 12;
+    firstClick = false;
     $('.moves').text(moves);
     setTimeout(function (){
     $('body').removeClass('animated fadeInDown');
     }, 1000)
 };
+
+function endGame() {
+    setTimeout(function(){
+        swal({
+            title: 'Congratulations!',
+            text: 'You finished in ' + second + ' seconds with ' + moves + ' moves remaining, netting you a ' + stars.length + ' star score!',
+            icon: 'success',
+            allowOutsideClick: false,
+            buttons: {
+            cancel: {
+                text: 'Back to game board',
+                value: null,
+                visible: true,
+                closeModal: true
+            },
+            confirm: {
+                text: 'Play again?',
+                value: true,
+                visible: true,
+                closeModal: true
+            }
+        }
+            
+            }).then(function() {
+                    restart();
+                });
+        endTimer();
+                }, 500);
+}
+
 
 //shuffle function
 function shuffle(array) {
