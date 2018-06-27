@@ -2,7 +2,7 @@ const cards = [];
 let firstClick = false;
 const cardIcons = ["fa fa-diamond", "fa fa-paper-plane-o", "fa fa-anchor", "fa fa-bolt", "fa fa-cube", "fa fa-leaf", "fa fa-bicycle", "fa fa-bomb"];
 const cardList = cardIcons.concat(cardIcons);
-const stars = ['1','2','3'];
+let stars = ['1','2','3'];
 match=0;
 currentTimer=0;
 second=0;
@@ -90,9 +90,9 @@ const addCardListener = function(){
                 match++;
                 emptyArray();
             } else {
-                $('.deck').find('.show').removeClass('open clicked').addClass('animated tada notmatch');
+                $('.deck').find('.show').removeClass('open').addClass('animated tada notmatch');
                 setTimeout(function (){
-                    $('.deck').find('.notmatch').removeClass('clicked animated tada open show notmatch');
+                    $('.deck').find('.notmatch').removeClass('animated tada open show notmatch clicked');
                 }, 1000)
                 moves--;
                 $('.moves').text(moves);
@@ -113,7 +113,9 @@ $('.restart').bind('click', function() {
     $('.two').removeClass('fa-star-o').addClass('fa-star');
     $('.three').removeClass('fa-star-o').addClass('fa-star');
     startGame();
-    firstClick = ['1'];
+    shuffle(cardList);
+    stars = ['1','2','3'];
+    firstClick = false;
     moves = 12;
     $('.moves').text(moves);
     setTimeout(function (){
@@ -129,6 +131,7 @@ function restart () {$('body').addClass('animated fadeInDown');
     startGame();
     shuffle(cardList);
     moves = 12;
+    stars = ['1','2','3'];
     firstClick = false;
     $('.moves').text(moves);
     setTimeout(function (){
